@@ -1,0 +1,40 @@
+{
+  "name": "ReadComp",
+  "short_name": "ReadComp",
+  "description": "Comprehend content better using AI!",
+  "features": [
+    "Fast",
+    "Accurate AI",
+    "Works on all your devices"
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "assets/icon/icon64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon/icon256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "background_color": "#6B69D6",
+  "theme_color": "#6B69D6"
+}

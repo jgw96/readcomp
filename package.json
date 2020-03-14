@@ -1,0 +1,29 @@
+{
+  "name": "compread",
+  "private": true,
+  "version": "0.0.1",
+  "description": "compread",
+  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watch",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@ionic/core": "^5.0.0",
+    "@stencil/core": "^1.9.2",
+    "workbox-build": "4.3.1"
+  },
+  "dependencies": {
+    "@microsoft/immersive-reader-sdk": "^1.0.0",
+    "@pwabuilder/pwainstall": "^1.4.1",
+    "@tensorflow-models/qna": "^1.0.0",
+    "@tensorflow/tfjs-converter": "^1.5.2",
+    "@tensorflow/tfjs-core": "^1.5.2"
+  }
+}
