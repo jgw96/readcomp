@@ -38,7 +38,7 @@ export class AppHome {
 
     if (!this.model) {
       // lazy import and load tensorflow module
-      const module = await import ('@tensorflow-models/qna');
+      const module = await import('@tensorflow-models/qna');
       console.log(module);
       this.model = await module.load();
     }
@@ -103,21 +103,18 @@ export class AppHome {
   }
 
   async fromFile() {
-    const fileHandle = await (window as any).chooseFileSystemEntries({
-      accepts: [{
-        description: 'Text file',
-        extensions: ['txt'],
-        mimeTypes: ['text/plain'],
-      }]
-    });
+    const nativefs = await import('browser-nativefs');
+    
+    const file = await nativefs.fileOpen({
+      description: 'Text file',
+      extensions: ['txt'],
+      mimeTypes: ['text/plain']
+    })
 
-    if (fileHandle) {
-      const file = await fileHandle.getFile();
-      const contents = await file.text();
+    const contents = await file.text();
 
-      if (contents) {
-        this.el.querySelector('ion-textarea').value = contents;
-      }
+    if (contents) {
+      this.el.querySelector('ion-textarea').value = contents;
     }
   }
 
