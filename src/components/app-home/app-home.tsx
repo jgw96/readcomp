@@ -3,8 +3,6 @@ import { loadingController, toastController } from '@ionic/core';
 
 import '@pwabuilder/pwainstall';
 
-import * as qna from '@tensorflow-models/qna';
-
 
 @Component({
   tag: 'app-home',
@@ -20,16 +18,6 @@ export class AppHome {
   tempArray = [];
 
   async componentDidLoad() {
-
-    if ((window as any).requestIdleCallback) {
-      (window as any).requestIdleCallback(async () => {
-        this.model = await qna.load();
-      });
-    }
-    else {
-      this.model = await qna.load();
-    }
-
     if (window.location.href.includes('text=')) {
       let text = new URL(window.location.href).searchParams.get('text');
       console.log('text', text);
@@ -48,6 +36,12 @@ export class AppHome {
     });
     await loading.present();
 
+    if (!this.model) {
+      // lazy import and load tensorflow module
+      const module = await import ('@tensorflow-models/qna');
+      console.log(module);
+      this.model = await module.load();
+    }
 
     const question: string = ((this.el.querySelector('.mobileInput input') as HTMLInputElement).value as string);
     const content = this.el.querySelector('ion-textarea').value;
