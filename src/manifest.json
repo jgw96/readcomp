@@ -26,6 +26,11 @@
       "type": "image/png"
     }
   ],
+  "screenshots": [
+    {
+      "src": "assets/screen1.png"
+    }
+  ],
   "share_target": {
     "action": "/",
     "method": "GET",
