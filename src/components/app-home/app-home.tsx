@@ -1,5 +1,5 @@
 import { Component, Element, h, State } from '@stencil/core';
-import { loadingController, toastController, alertController } from '@ionic/core';
+import { loadingController, toastController, alertController, modalController } from '@ionic/core';
 
 import '@pwabuilder/pwainstall';
 
@@ -26,6 +26,18 @@ export class AppHome {
         console.log('setting text');
         this.el.querySelector('ion-textarea').value = text;
       }
+    }
+
+    const visited = localStorage.getItem('compread');
+    console.log(visited);
+
+    if (!visited) {
+      const modal = await modalController.create({
+        component: "app-intro"
+      });
+      await modal.present();
+
+      localStorage.setItem('compread', 'true');
     }
 
   }
@@ -64,7 +76,8 @@ export class AppHome {
     else {
       const toast = await toastController.create({
         message: "You must enter a question and text to comprehend...",
-        duration: 1800
+        duration: 1800,
+        mode: "ios"
       });
       await toast.present();
     }
@@ -82,7 +95,8 @@ export class AppHome {
 
       const toast = await toastController.create({
         message: "text copied...",
-        duration: 1800
+        duration: 1800,
+        mode: "ios"
       });
       await toast.present();
     }
@@ -104,7 +118,7 @@ export class AppHome {
 
   async fromFile() {
     const nativefs = await import('browser-nativefs');
-    
+
     const file = await nativefs.fileOpen({
       description: 'Text file',
       extensions: ['txt'],
@@ -119,32 +133,44 @@ export class AppHome {
   }
 
   async sentiment() {
-    const loading = await loadingController.create({
-      message: "Analyzing..."
-    });
-    await loading.present();
-
     const text = this.el.querySelector('ion-textarea').value;
-    
-    const module = await import('@tensorflow-models/toxicity');
-    const model = await module.load(0.9, ['identity_attack', 'insult', 'obscene', 'severe_toxicity', 'sexual_explicit', 'threat', 'toxicity']);
 
-    const preds = await model.classify(text);
-    
-    await loading.dismiss();
+    if (text && text.length > 1) {
+      const loading = await loadingController.create({
+        message: "Analyzing..."
+      });
+      await loading.present();
 
-    const alert = await alertController.create({
-      header: "Sentiment Analysis",
-      message: `
-        This text may be an ${preds[0].label.replace('_', ' ')}
-      `,
-      buttons: [
-        {
-          text: "OK"
-        }
-      ]
-    });
-    await alert.present();
+      const module = await import('@tensorflow-models/toxicity');
+      const model = await module.load(0.9, ['identity_attack', 'insult', 'obscene', 'severe_toxicity', 'sexual_explicit', 'threat', 'toxicity']);
+
+      const preds = await model.classify(text);
+
+      await loading.dismiss();
+
+      const alert = await alertController.create({
+        header: "Sentiment Analysis",
+        message: `
+          This text may be an ${preds[0].label.replace('_', ' ')}
+        `,
+        buttons: [
+          {
+            text: "OK"
+          }
+        ]
+      });
+      await alert.present();
+    }
+    else {
+      const toast = await toastController.create({
+        message: "Enter some text to analyze",
+        buttons: [
+          "OK"
+        ],
+        mode: "ios"
+      });
+      await toast.present();
+    }
   }
 
   render() {
@@ -159,6 +185,12 @@ export class AppHome {
         <main id="mainContent">
           <section id="textEnter">
             <div id="textActions">
+              <ion-button fill="clear" onClick={() => this.sentiment()}>
+                <ion-icon name="happy-outline" slot="start"></ion-icon>
+
+                Sentiment
+              </ion-button>
+
               <ion-button onClick={() => this.fromFile()} fill="clear">
                 <ion-icon name="folder-outline" slot="start"></ion-icon>
 
@@ -181,12 +213,6 @@ export class AppHome {
                 <ion-icon name="trash-outline" slot="start"></ion-icon>
 
                 Clear
-              </ion-button>
-
-              <ion-button fill="clear" onClick={() => this.sentiment()}>
-                <ion-icon name="happy-outline" slot="start"></ion-icon>
-
-                Sentiment
               </ion-button>
             </div>
 

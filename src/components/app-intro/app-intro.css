@@ -1,0 +1,27 @@
+app-intro {
+    /* Component styles go here */
+}
+
+#introText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 4em;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+#introImg {
+    height: 14em;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+}
+
+@media(max-width: 800px) {
+    #introText {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+}
