@@ -1,5 +1,5 @@
 import { Component, Element, h, State } from '@stencil/core';
-import { loadingController, toastController } from '@ionic/core';
+import { loadingController, toastController, alertController } from '@ionic/core';
 
 import '@pwabuilder/pwainstall';
 
@@ -118,6 +118,35 @@ export class AppHome {
     }
   }
 
+  async sentiment() {
+    const loading = await loadingController.create({
+      message: "Analyzing..."
+    });
+    await loading.present();
+
+    const text = this.el.querySelector('ion-textarea').value;
+    
+    const module = await import('@tensorflow-models/toxicity');
+    const model = await module.load(0.9, ['identity_attack', 'insult', 'obscene', 'severe_toxicity', 'sexual_explicit', 'threat', 'toxicity']);
+
+    const preds = await model.classify(text);
+    
+    await loading.dismiss();
+
+    const alert = await alertController.create({
+      header: "Sentiment Analysis",
+      message: `
+        This text may be an ${preds[0].label.replace('_', ' ')}
+      `,
+      buttons: [
+        {
+          text: "OK"
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   render() {
     return [
       <ion-header>
@@ -153,11 +182,21 @@ export class AppHome {
 
                 Clear
               </ion-button>
+
+              <ion-button fill="clear" onClick={() => this.sentiment()}>
+                <ion-icon name="happy-outline" slot="start"></ion-icon>
+
+                Sentiment
+              </ion-button>
             </div>
 
             <ion-textarea placeholder="Enter some text"></ion-textarea>
 
             <div id="mobileActions">
+              <ion-fab-button size="small" color="secondary" onClick={() => this.sentiment()}>
+                <ion-icon size="small" name="happy-outline"></ion-icon>
+              </ion-fab-button>
+
               <ion-fab-button onClick={() => this.copy()} color="primary" size="small">
                 <ion-icon size="small" name="copy-outline"></ion-icon>
               </ion-fab-button>
@@ -175,13 +214,13 @@ export class AppHome {
           <section id="questionEnter">
             <pwa-install>Install ReadComp</pwa-install>
 
-            {window.matchMedia('(max-width: 800px)').matches ? null : <ion-item id="inputItem" lines="none">
+            <ion-item id="inputItem" lines="none">
               <ion-input type="text" class="mobileInput" placeholder="Enter a question..."></ion-input>
 
               <ion-buttons slot="end">
                 <ion-button onClick={() => this.ask()} fill="solid" color="primary">Ask Question</ion-button>
               </ion-buttons>
-            </ion-item>}
+            </ion-item>
 
             {this.answers && this.answers.length > 0 ? <ion-list>
               {

@@ -141,3 +141,17 @@
     --ion-item-background: #1a1b1e;
   }
 }
+
+@media (spanning: single-fold-vertical) {
+  ion-alert, ion-modal, ion-toast, ion-loading {
+    width: 50vw !important;
+    padding: 2em;
+    right: 0 !important;
+    left: initial !important;
+  }
+  
+  ion-toast {
+    width: 49vw !important;
+    padding: initial;
+  }
+}
