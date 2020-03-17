@@ -146,12 +146,30 @@
   ion-alert, ion-modal, ion-toast, ion-loading {
     width: 50vw !important;
     padding: 2em;
-    right: 0 !important;
-    left: initial !important;
+    left: 0 !important;
+    right: initial !important;
   }
   
   ion-toast {
     width: 49vw !important;
     padding: initial;
   }
+}
+
+@media (spanning: single-fold-horizontal) {
+  #mainContent {
+    flex-direction: column;
+  }
+
+  #textEnter ion-textarea textarea {
+    height: 35vh !important;
+  }
+
+  ion-alert, ion-modal, ion-loading {
+    height: 50vh !important;
+  }
+
+  ion-toast {
+    height: 47vh;
+  };
 }

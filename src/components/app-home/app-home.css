@@ -3,6 +3,14 @@
   justify-content: space-between;
 }
 
+pwa-install::part(openButton) {
+  background: var(--ion-color-primary);
+  border-radius: 24px;
+  padding-left: 14px;
+  padding-right: 14px;
+  font-weight: bold;
+}
+
 #mainContent section {
   flex: 1;
 }

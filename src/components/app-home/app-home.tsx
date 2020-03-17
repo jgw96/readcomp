@@ -223,6 +223,10 @@ export class AppHome {
                 <ion-icon size="small" name="happy-outline"></ion-icon>
               </ion-fab-button>
 
+              <ion-fab-button onClick={() => this.fromFile()} color="primary" size="small">
+                <ion-icon size="small" name="folder-outline"></ion-icon>
+              </ion-fab-button>
+
               <ion-fab-button onClick={() => this.copy()} color="primary" size="small">
                 <ion-icon size="small" name="copy-outline"></ion-icon>
               </ion-fab-button>

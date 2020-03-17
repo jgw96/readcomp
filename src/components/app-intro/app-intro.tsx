@@ -18,7 +18,7 @@ export class AppIntro {
                 <main id="introText">
                     <h1>Welcome!</h1>
 
-                    <p>CompRead can help you comprehend text by enabling you to ask questions about it. Enter your text, ask a question and an AI model will run ON YOUR DEVICE and give you an answer.</p>
+                    <p>ReadComp can help you comprehend text by enabling you to ask questions about it. Enter your text, ask a question and an AI model will run ON YOUR DEVICE and give you an answer.</p>
 
                     <ion-button onClick={() => this.getStarted()}>Get Started!</ion-button>
 
